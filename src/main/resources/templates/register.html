@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Register</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
@@ -12,23 +12,28 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class="text-center">Login</h2>
-        <form th:action="@{/login}" method="post" class="p-4 border rounded bg-white shadow-sm">
+        <h2 class="text-center">Register</h2>
+        <form th:action="@{/register}" method="post" class="p-4 border rounded bg-white shadow-sm">
             <div class="mb-3">
                 <label for="username" class="form-label">Username:</label>
                 <input type="text" id="username" name="username" class="form-control" required />
-                <div class="invalid-feedback">Please enter your username.</div>
+                <div class="invalid-feedback">Please enter a username.</div>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password:</label>
                 <input type="password" id="password" name="password" class="form-control" required />
-                <div class="invalid-feedback">Please enter your password.</div>
+                <div class="invalid-feedback">Please enter a password.</div>
+            </div>
+            <div class="mb-3">
+                <label for="confirmPassword" class="form-label">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required />
+                <div class="invalid-feedback">Please confirm your password.</div>
             </div>
             <div class="mb-3 text-center">
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary">Register</button>
             </div>
             <div class="text-center">
-                <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
+                <p>Already have an account? <a th:href="@{/login}">Log in</a></p>
             </div>
         </form>
     </div>
