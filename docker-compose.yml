@@ -1,0 +1,43 @@
+services:
+  petclinic:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    volumes:
+      - ./src:/app/src  # Mount the source code to support hot reloading
+      - ~/.m2:/root/.m2  # Cache Maven dependencies
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev  # Set active profile if needed
+    networks:
+      - mariadb-school_internal
+      - caddy
+    labels:
+      - "caddy_1=klinik.zef.my.id"
+      - "caddy_1.reverse_proxy={{upstreams 8080}}"
+      ## Declares security headers to improve security
+      - "caddy_1.header="
+      - "caddy_1.header.Permissions-Policy=interest-cohort=()"
+      - "caddy_1.header.Strict-Transport-Security=max-age=31536000;"
+      - "caddy_1.header.X-Content-Type-Options=nosniff"
+      - "caddy_1.header.X-Frame-Options=self"
+      - "caddy_1.header.X-Robots-Tag=none"
+      ## allow search engine indexing
+      - "caddy_1.header.Referrer-Policy=no-referrer-when-downgrade"
+      #- "caddy_1.header.Content-Security-Policy=`default-src 'self'`"
+      ## Removes server and x-powered-by headers
+      - "caddy_1.header.-Server="
+      - "caddy_1.header.-X-Powered-By="
+      ## Enable zstd and gzip compression
+      - "caddy_1.encode=zstd gzip"
+      ## Enable access log
+      - "caddy_1.log.output=file /data/log/klinik.zef.my.id.log"
+      - "caddy_1.log.output.roll_size=50MiB"
+      - "caddy_1.log.output.roll_keep=5"
+
+networks:
+  caddy:
+    external: true
+  mariadb-school_internal:
+    external: true
